@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Tootyyyy 🎂✨</title>
+
+<!--
+  ============================================================
+  HOW TO PERSONALIZE THIS SITE — quick guide
+  ============================================================
+  1. PHOTOS   → search for "EDIT: PHOTOS" in the JS below.
+                Put your image files in a folder named "photos"
+                next to this HTML file, and list them there.
+  2. MUSIC    → search for "EDIT: MUSIC" in the JS below.
+                Put your mp3 in a folder named "music" next to
+                this file, and set the file name + song title.
+  3. TIMELINE → search for "EDIT: TIMELINE" in the JS below.
+                Add/remove memory cards (date + short story).
+  4. VIDEOS   → search for "EDIT: VIDEOS" in the JS below.
+                Put your mp4 files in a folder named "videos"
+                next to this file, and list them there.
+  5. MESSAGES → search for "EDIT: TEXT" — the hero subtitle,
+                the birthday letter and the finale line all
+                live directly in the HTML, easy to find & edit.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Caveat:wght@500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --bg-cream:   #FFF6FA;
+  --blush:      #FFD6E7;
+  --blush-deep: #FFB8D9;
+  --lavender:   #E3D4FB;
+  --lavender-deep:#C9AEF2;
+  --rose:       #FF6FA5;
+  --rose-deep:  #FF4C8B;
+  --plum:       #4A2545;
+  --plum-soft:  #7A4E70;
+  --gold:       #FFDA8A;
+  --white-soft: #FFFDFC;
+
+  --font-display: 'Pacifico', cursive;
+  --font-hand: 'Caveat', cursive;
+  --font-body: 'Quicksand', sans-serif;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family: var(--font-body);
+  background: var(--bg-cream);
+  color: var(--plum);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+}
+
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; border:none; }
+a{ color:inherit; text-decoration:none; }
+
+::selection{ background:var(--rose); color:#fff; }
+
+/* ============================================================
+   AMBIENT LAYER — glow blobs + floating hearts/sparkles
+   ============================================================ */
+.glow-blob{
+  position:fixed; border-radius:50%; filter:blur(70px); opacity:0.55;
+  pointer-events:none; z-index:0;
+}
+.glow-blob.b1{ width:420px; height:420px; background:var(--blush); top:-120px; left:-100px; }
+.glow-blob.b2{ width:380px; height:380px; background:var(--lavender); bottom:-140px; right:-100px; }
+.glow-blob.b3{ width:300px; height:300px; background:var(--gold); top:40%; left:50%; opacity:0.25; }
+
+#floaty-layer{
+  position:fixed; inset:0; pointer-events:none; z-index:5; overflow:hidden;
+}
+.floaty{
+  position:absolute; bottom:-10%; font-size:1.4rem; opacity:0;
+  animation: floatUp linear forwards;
+  filter: drop-shadow(0 0 6px rgba(255,111,165,0.35));
+}
+@keyframes floatUp{
+  0%{ opacity:0; transform: translateY(0) translateX(0) rotate(0deg); }
+  10%{ opacity:0.9; }
+  90%{ opacity:0.7; }
+  100%{ opacity:0; transform: translateY(-110vh) translateX(var(--drift,20px)) rotate(360deg); }
+}
+
+/* ============================================================
+   START OVERLAY
+   ============================================================ */
+#start-overlay{
+  position:fixed; inset:0; z-index:100;
+  display:flex; align-items:center; justify-content:center;
+  background: radial-gradient(circle at 30% 20%, var(--blush) 0%, transparent 55%),
+              radial-gradient(circle at 80% 80%, var(--lavender) 0%, transparent 55%),
+              var(--bg-cream);
+  transition: opacity 1s ease, visibility 1s ease;
+}
+#start-overlay.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+
+.start-card{
+  text-align:center; padding: 3rem 2.5rem; max-width:480px;
+  animation: cardIn 1.1s ease both;
+}
+@keyframes cardIn{
+  0%{ opacity:0; transform: translateY(24px) scale(0.96); }
+  100%{ opacity:1; transform: translateY(0) scale(1); }
+}
+.start-icon{ font-size:3.4rem; margin-bottom:0.6rem; animation: gentleBounce 2.4s ease-in-out infinite; }
+@keyframes gentleBounce{ 0%,100%{ transform:translateY(0) rotate(-4deg);} 50%{ transform:translateY(-10px) rotate(4deg);} }
+
+.start-card p.eyebrow{
+  font-family: var(--font-hand); font-size:1.3rem; color:var(--rose-deep); letter-spacing:1px;
+}
+.start-card h1{
+  font-family: var(--font-display); font-size: clamp(1.8rem, 6vw, 2.6rem);
+  color:var(--plum); margin: 0.4rem 0 0.3rem; line-height:1.3;
+}
+.start-card .name{ color:var(--rose-deep); }
+.start-card p.sub{
+  font-size:1rem; color:var(--plum-soft); margin-bottom:2rem;
+}
+
+#start-btn{
+  position:relative; padding: 0.95rem 2.4rem; font-size:1.05rem; font-weight:600;
+  color:#fff; border-radius:999px; letter-spacing:0.3px;
+  background: linear-gradient(135deg, var(--rose), var(--lavender-deep));
+  box-shadow: 0 10px 30px rgba(255,111,165,0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+#start-btn:hover{ transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 36px rgba(255,111,165,0.55); }
+#start-btn:active{ transform: translateY(0) scale(0.98); }
+
+.start-hint{ margin-top:1rem; font-size:0.8rem; color:var(--plum-soft); opacity:0.75; }
+
+/* ============================================================
+   SITE WRAPPER
+   ============================================================ */
+#site{
+  position:relative; z-index:1;
+  opacity:0; transition: opacity 1.2s ease;
+}
+#site.revealed{ opacity:1; }
+
+section{
+  position:relative; z-index:2;
+  padding: 6rem 1.5rem;
+  max-width: 1080px; margin:0 auto;
+}
+
+.eyebrow-label{
+  font-family:var(--font-hand); font-size:1.15rem; color:var(--rose-deep);
+  display:inline-flex; align-items:center; gap:0.5rem; margin-bottom:0.6rem;
+}
+.eyebrow-label::before, .eyebrow-label::after{ content:'✦'; font-size:0.8rem; opacity:0.7; }
+
+.section-title{
+  font-family: var(--font-display); font-size: clamp(1.9rem, 5vw, 2.8rem);
+  color:var(--plum); margin-bottom:0.6rem; line-height:1.25;
+}
+.section-lead{
+  font-size:1.02rem; color:var(--plum-soft); max-width:560px; margin-bottom:2.6rem;
+}
+
+/* reveal-on-scroll */
+.reveal{ opacity:0; transform: translateY(36px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.reveal.in-view{ opacity:1; transform:none; }
+
+/* ============================================================
+   SIDE NAV DOTS
+   ============================================================ */
+#side-nav{
+  position:fixed; right:1.4rem; top:50%; transform:translateY(-50%);
+  z-index:60; display:flex; flex-direction:column; gap:0.85rem;
+}
+#side-nav a{
+  width:10px; height:10px; border-radius:50%; background:rgba(74,37,69,0.18);
+  display:block; position:relative; transition: background 0.3s ease, transform 0.3s ease;
+}
+#side-nav a.active{ background:var(--rose); transform:scale(1.35); }
+#side-nav a::after{
+  content: attr(data-label); position:absolute; right:140%; top:50%; transform:translateY(-50%);
+  font-size:0.72rem; font-family:var(--font-body); font-weight:600; color:var(--plum);
+  background:var(--white-soft); padding:0.25rem 0.6rem; border-radius:8px; white-space:nowrap;
+  opacity:0; pointer-events:none; transition:opacity 0.25s ease; box-shadow:0 4px 14px rgba(74,37,69,0.12);
+}
+#side-nav a:hover::after{ opacity:1; }
+@media (max-width:820px){ #side-nav{ display:none; } }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero{
+  min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding-top:4rem;
+}
+.hero-cake{ font-size:3.6rem; margin-bottom:1rem; animation: gentleBounce 3s ease-in-out infinite; }
+.hero-title{
+  font-family: var(--font-display); color:var(--plum);
+  font-size: clamp(2.2rem, 7vw, 4.2rem); line-height:1.25; margin-bottom:1.1rem;
+  text-shadow: 0 4px 24px rgba(255,111,165,0.25);
+}
+.hero-title .glow-word{ color:var(--rose-deep); }
+
+.hero-subtitle{
+  font-family: var(--font-hand); font-size: clamp(1.25rem, 3.2vw, 1.8rem);
+  color:var(--plum-soft); max-width:520px; margin-bottom:2.2rem;
+}
+
+.hero-scroll-cue{
+  margin-top:2.5rem; font-size:0.8rem; color:var(--plum-soft); letter-spacing:1px;
+  display:flex; flex-direction:column; align-items:center; gap:0.4rem; opacity:0.75;
+}
+.hero-scroll-cue span.line{
+  width:1px; height:34px; background:linear-gradient(var(--rose), transparent);
+  animation: scrollCue 1.8s ease-in-out infinite;
+}
+@keyframes scrollCue{ 0%{ transform:scaleY(0.4); opacity:0.4;} 50%{ transform:scaleY(1); opacity:1;} 100%{ transform:scaleY(0.4); opacity:0.4;} }
+
+/* typing effect for hero */
+.typing-line{
+  font-family:var(--font-hand); font-size:1.1rem; color:var(--rose-deep);
+  border-right: 2px solid var(--rose-deep); white-space:nowrap; overflow:hidden;
+  margin: 0 auto 1.6rem; width:0; animation: typing 2.6s steps(28,end) 1.4s forwards, blinkCursor 0.75s step-end infinite;
+}
+@keyframes typing{ to{ width: 15.5ch; } }
+@keyframes blinkCursor{ 50%{ border-color:transparent; } }
+
+/* confetti canvas */
+#confetti-canvas{ position:fixed; inset:0; z-index:99; pointer-events:none; }
+
+/* ============================================================
+   GALLERY — carousel + polaroids
+   ============================================================ */
+.carousel-wrap{ position:relative; }
+.carousel-track{
+  display:flex; gap:1.6rem; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding: 1.5rem 0.5rem 2.5rem; scrollbar-width:none;
+}
+.carousel-track::-webkit-scrollbar{ display:none; }
+
+.polaroid{
+  flex:0 0 auto; width:230px; scroll-snap-align:center;
+  background:var(--white-soft); padding:0.9rem 0.9rem 1.4rem;
+  border-radius:6px; box-shadow: 0 14px 30px rgba(74,37,69,0.16), 0 2px 6px rgba(74,37,69,0.08);
+  transform: rotate(var(--tilt,-3deg));
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor:pointer; position:relative;
+}
+.polaroid:hover{ transform: rotate(0deg) translateY(-8px) scale(1.03); box-shadow:0 22px 40px rgba(74,37,69,0.24); }
+.polaroid .photo-box{
+  width:100%; aspect-ratio: 1/1; border-radius:2px; overflow:hidden; background:
+    linear-gradient(135deg, var(--blush), var(--lavender));
+  display:flex; align-items:center; justify-content:center; position:relative;
+}
+.polaroid .photo-box img{ width:100%; height:100%; object-fit:cover; }
+.polaroid .photo-box .ph-fallback{
+  text-align:center; color:var(--plum-soft); font-size:0.78rem; padding:0.6rem;
+}
+.polaroid .photo-box .ph-fallback .icon{ font-size:1.6rem; display:block; margin-bottom:0.3rem; }
+.polaroid .caption{
+  font-family: var(--font-hand); font-size:1.15rem; text-align:center; color:var(--plum);
+  margin-top:0.7rem;
+}
+.washi{
+  position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(-3deg);
+  width:70px; height:22px; background: repeating-linear-gradient(45deg, var(--rose), var(--rose) 6px, var(--gold) 6px, var(--gold) 12px);
+  opacity:0.85; border-radius:2px; box-shadow:0 3px 6px rgba(0,0,0,0.08);
+}
+
+.carousel-controls{ display:flex; justify-content:center; gap:1rem; margin-top:0.5rem; }
+.carousel-btn{
+  width:42px; height:42px; border-radius:50%; background:var(--white-soft);
+  color:var(--rose-deep); font-size:1.1rem; box-shadow:0 6px 18px rgba(74,37,69,0.14);
+  display:flex; align-items:center; justify-content:center; transition: transform 0.2s ease;
+}
+.carousel-btn:hover{ transform:scale(1.1); }
+
+/* Lightbox */
+#lightbox{
+  position:fixed; inset:0; background:rgba(74,37,69,0.82); backdrop-filter: blur(6px);
+  z-index:120; display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden; transition: opacity 0.35s ease, visibility 0.35s ease;
+  padding:2rem;
+}
+#lightbox.open{ opacity:1; visibility:visible; }
+#lightbox .lb-inner{ max-width:560px; width:100%; text-align:center; }
+#lightbox img{ width:100%; border-radius:10px; box-shadow:0 20px 60px rgba(0,0,0,0.4); }
+#lightbox .lb-caption{ color:#fff; font-family:var(--font-hand); font-size:1.3rem; margin-top:1rem; }
+#lightbox .lb-close{
+  position:absolute; top:1.4rem; right:1.6rem; color:#fff; font-size:1.8rem; background:none;
+}
+
+/* ============================================================
+   OUR SPECIAL MOMENTS — video cards
+   ============================================================ */
+.video-grid{
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.8rem; margin-top: 1rem;
+}
+
+.video-card{
+  background: var(--white-soft); border-radius: 20px; padding: 0.7rem 0.7rem 1.1rem;
+  box-shadow: 0 14px 34px rgba(74,37,69,0.14), 0 2px 8px rgba(74,37,69,0.06);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: pointer; position:relative;
+}
+.video-card:hover{ transform: translateY(-8px) scale(1.02); box-shadow: 0 24px 46px rgba(74,37,69,0.22); }
+
+.video-card .clapper{
+  position:absolute; top:-12px; left:-10px; font-size:1.4rem;
+  filter: drop-shadow(0 4px 8px rgba(74,37,69,0.25)); z-index:2;
+  transform: rotate(-12deg);
+}
+
+.video-frame{
+  position:relative; width:100%; aspect-ratio: 9/12; border-radius:14px; overflow:hidden;
+  background: linear-gradient(135deg, var(--lavender), var(--blush));
+}
+.video-frame video{
+  width:100%; height:100%; object-fit:cover; display:block; border-radius:14px;
+}
+.video-frame .play-badge{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  background: rgba(74,37,69,0.0); transition: background 0.3s ease;
+}
+.video-card:hover .play-badge{ background: rgba(74,37,69,0.18); }
+.video-frame .play-badge span{
+  width:46px; height:46px; border-radius:50%; background: rgba(255,255,255,0.85);
+  color: var(--rose-deep); display:flex; align-items:center; justify-content:center;
+  font-size:1.05rem; opacity:0; transform: scale(0.8); transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 8px 20px rgba(74,37,69,0.25);
+}
+.video-card:hover .play-badge span{ opacity:1; transform: scale(1); }
+
+.video-frame .vid-fallback{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:var(--plum-soft); font-size:0.78rem; padding:0.8rem;
+}
+.video-frame .vid-fallback .icon{ font-size:1.7rem; display:block; margin-bottom:0.3rem; }
+
+.video-card .caption{
+  font-family: var(--font-hand); font-size:1.12rem; text-align:center; color:var(--plum);
+  margin-top:0.75rem;
+}
+
+/* video lightbox / cinematic modal */
+#video-lightbox{
+  position:fixed; inset:0; background:rgba(20,10,18,0.9); backdrop-filter: blur(8px);
+  z-index:120; display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden; transition: opacity 0.35s ease, visibility 0.35s ease;
+  padding: 2rem;
+}
+#video-lightbox.open{ opacity:1; visibility:visible; }
+#video-lightbox .vlb-inner{ max-width:480px; width:100%; text-align:center; }
+#video-lightbox video{
+  width:100%; max-height:78vh; border-radius:16px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+  background:#000;
+}
+#video-lightbox .vlb-caption{ color:#fff; font-family:var(--font-hand); font-size:1.35rem; margin-top:1rem; }
+#video-lightbox .vlb-close{
+  position:absolute; top:1.4rem; right:1.6rem; color:#fff; font-size:1.8rem; background:none;
+}
+
+@media(max-width:600px){
+  .video-grid{ grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:1.2rem; }
+}
+
+/* ============================================================
+   MUSIC SECTION
+   ============================================================ */
+#music{ text-align:center; }
+.vinyl-wrap{ display:flex; flex-direction:column; align-items:center; gap:1.6rem; }
+
+.vinyl{
+  width:210px; height:210px; border-radius:50%; position:relative;
+  background: repeating-radial-gradient(circle at center, #2b1a29 0, #2b1a29 2px, #3a2436 3px, #3a2436 5px);
+  box-shadow: 0 20px 50px rgba(74,37,69,0.35), inset 0 0 0 10px rgba(255,255,255,0.03);
+  display:flex; align-items:center; justify-content:center;
+  animation: spinVinyl 6s linear infinite; animation-play-state: paused;
+}
+.vinyl.spinning{ animation-play-state: running; }
+@keyframes spinVinyl{ to{ transform: rotate(360deg); } }
+.vinyl .label{
+  width:78px; height:78px; border-radius:50%;
+  background: radial-gradient(circle, var(--gold), var(--rose));
+  display:flex; align-items:center; justify-content:center; font-size:1.4rem;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.5);
+}
+.vinyl .label::after{ content:''; width:10px; height:10px; border-radius:50%; background:var(--plum); position:absolute; }
+
+.now-playing{
+  font-family:var(--font-hand); font-size:1.4rem; color:var(--plum-soft);
+}
+.now-playing strong{ color:var(--rose-deep); display:block; font-size:1.6rem; }
+
+.music-cta{
+  display:inline-flex; align-items:center; gap:0.6rem; margin-top:0.4rem;
+  padding:0.75rem 1.7rem; border-radius:999px; background:var(--white-soft);
+  box-shadow:0 8px 22px rgba(74,37,69,0.14); font-weight:600; color:var(--plum);
+  transition: transform 0.2s ease;
+}
+.music-cta:hover{ transform:translateY(-2px); }
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline{ position:relative; margin-top:1rem; }
+.timeline::before{
+  content:''; position:absolute; left:24px; top:0; bottom:0; width:2px;
+  background: repeating-linear-gradient(var(--blush-deep), var(--blush-deep) 6px, transparent 6px, transparent 12px);
+}
+@media(min-width:760px){ .timeline::before{ left:50%; transform:translateX(-50%);} }
+
+.tl-item{ position:relative; padding-left:60px; margin-bottom:2.6rem; }
+.tl-item .tl-dot{
+  position:absolute; left:15px; top:4px; width:20px; height:20px; border-radius:50%;
+  background: linear-gradient(135deg, var(--rose), var(--lavender-deep)); box-shadow:0 0 0 5px var(--bg-cream), 0 4px 10px rgba(255,111,165,0.4);
+}
+.tl-card{
+  background:var(--white-soft); border-radius:16px; padding:1.4rem 1.5rem;
+  box-shadow:0 10px 26px rgba(74,37,69,0.1); position:relative;
+}
+.tl-card .tl-date{
+  font-family:var(--font-hand); color:var(--rose-deep); font-size:1.15rem; margin-bottom:0.3rem; display:block;
+}
+.tl-card h3{ font-size:1.08rem; margin-bottom:0.4rem; color:var(--plum); }
+.tl-card p{ font-size:0.92rem; color:var(--plum-soft); line-height:1.55; }
+
+@media(min-width:760px){
+  .tl-item{ width:50%; padding-left:0; }
+  .tl-item:nth-child(odd){ left:0; padding-right:3rem; text-align:right; }
+  .tl-item:nth-child(even){ left:50%; padding-left:3rem; }
+  .tl-item:nth-child(odd) .tl-dot{ right:-10px; left:auto; }
+  .tl-item:nth-child(even) .tl-dot{ left:-10px; }
+}
+
+/* ============================================================
+   MESSAGE SECTION
+   ============================================================ */
+#message{
+  text-align:center; position:relative;
+}
+.letter-card{
+  max-width:640px; margin:0 auto; background:var(--white-soft);
+  border-radius:22px; padding: 3rem 2.2rem; box-shadow:0 24px 60px rgba(74,37,69,0.16);
+  position:relative;
+}
+.letter-card::before{
+  content:'❤'; position:absolute; top:-22px; left:50%; transform:translateX(-50%);
+  width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--rose),var(--lavender-deep));
+  color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.2rem;
+  box-shadow:0 8px 20px rgba(255,111,165,0.4);
+}
+.letter-text{
+  font-family:var(--font-hand); font-size:1.35rem; line-height:1.85; color:var(--plum);
+  text-align:left;
+}
+.letter-signoff{ margin-top:1.4rem; font-family:var(--font-display); color:var(--rose-deep); font-size:1.1rem; text-align:right; }
+
+/* ============================================================
+   FINALE
+   ============================================================ */
+#finale{
+  min-height:80svh; display:flex; align-items:center; justify-content:center; text-align:center;
+  flex-direction:column; gap:1.2rem;
+}
+.finale-text{
+  font-family:var(--font-display); color:var(--plum);
+  font-size: clamp(1.6rem, 5.4vw, 3rem); line-height:1.45; max-width:760px;
+  text-shadow: 0 6px 30px rgba(255,111,165,0.3);
+}
+.finale-text .glow-word{ color:var(--rose-deep); }
+.finale-hearts{ font-size:2rem; }
+.finale-footer{ font-size:0.8rem; color:var(--plum-soft); opacity:0.6; margin-top:2rem; }
+
+/* ============================================================
+   FIXED MUSIC PLAYER
+   ============================================================ */
+#music-player{
+  position:fixed; bottom:1.3rem; left:1.3rem; z-index:80;
+  display:flex; align-items:center; gap:0.7rem;
+  background: var(--white-soft); padding:0.55rem 1.1rem 0.55rem 0.55rem;
+  border-radius:999px; box-shadow:0 12px 32px rgba(74,37,69,0.22);
+}
+#mini-vinyl{
+  width:38px; height:38px; border-radius:50%;
+  background: repeating-radial-gradient(circle at center, #2b1a29 0, #2b1a29 1px, #3a2436 2px, #3a2436 4px);
+  display:flex; align-items:center; justify-content:center;
+  animation: spinVinyl 5s linear infinite; animation-play-state: paused;
+}
+#mini-vinyl.spinning{ animation-play-state: running; }
+#mini-vinyl .dot{ width:12px; height:12px; border-radius:50%; background: linear-gradient(135deg,var(--gold),var(--rose)); }
+
+#toggle-music-btn{
+  width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--rose),var(--lavender-deep));
+  color:#fff; font-size:0.95rem; display:flex; align-items:center; justify-content:center;
+  transition: transform 0.2s ease;
+}
+#toggle-music-btn:hover{ transform:scale(1.08); }
+
+.player-text{ display:flex; flex-direction:column; line-height:1.2; }
+.player-text .label{ font-size:0.62rem; letter-spacing:0.6px; color:var(--plum-soft); text-transform:uppercase; }
+.player-text .song{ font-size:0.82rem; font-weight:600; color:var(--plum); max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+@media(max-width:520px){
+  #music-player{ left:0.7rem; bottom:0.9rem; padding:0.45rem 0.9rem 0.45rem 0.45rem; }
+  .player-text .song{ max-width:80px; }
+}
+
+/* small helper */
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+
+/* focus visibility for accessibility */
+button:focus-visible, a:focus-visible{ outline:2px solid var(--rose-deep); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<!-- ambient glow blobs -->
+<div class="glow-blob b1"></div>
+<div class="glow-blob b2"></div>
+<div class="glow-blob b3"></div>
+
+<!-- floating hearts / sparkles container -->
+<div id="floaty-layer"></div>
+
+<!-- confetti canvas (used once on start) -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ============================================================
+     START OVERLAY — required because browsers block music
+     autoplay. Clicking this button starts the audio + confetti
+     and reveals the site. Music then keeps playing everywhere.
+     ============================================================ -->
+<div id="start-overlay">
+  <div class="start-card">
+    <div class="start-icon">🎂</div>
+    <p class="eyebrow">a little something for</p>
+    <h1>Happy Birthday, <span class="name">Tootyyyy</span> 🎂❤️</h1>
+    <p class="sub">A tiny digital scrapbook, made just for you.</p>
+    <button id="start-btn">Start Experience ✨</button>
+    <p class="start-hint">turn your sound on 🔊</p>
+  </div>
+</div>
+
+<!-- side dot navigation -->
+<nav id="side-nav">
+  <a href="#hero" data-label="Hello"></a>
+  <a href="#gallery" data-label="Gallery"></a>
+  <a href="#music" data-label="Our Song"></a>
+  <a href="#moments" data-label="Moments"></a>
+  <a href="#timeline" data-label="Memories"></a>
+  <a href="#message" data-label="Letter"></a>
+  <a href="#finale" data-label="Finale"></a>
+</nav>
+
+<div id="site">
+
+  <!-- ============================================================
+       1. HERO
+       ============================================================ -->
+  <section id="hero">
+    <div class="hero-cake reveal in-view">🎂</div>
+    <!-- EDIT: TEXT — hero title -->
+    <h1 class="hero-title reveal in-view">Happy Birthday <span class="glow-word">Tootyyyy</span> 🎂❤️</h1>
+    <!-- typing line (small handwritten accent) -->
+    <p class="typing-line">for my favorite person</p>
+    <!-- EDIT: TEXT — hero subtitle -->
+    <p class="hero-subtitle reveal in-view">To my favorite person and my beautiful best friend.</p>
+    <div class="hero-scroll-cue"><span class="line"></span>scroll down</div>
+  </section>
+
+  <!-- ============================================================
+       2. PHOTO GALLERY
+       ============================================================ -->
+  <section id="gallery">
+    <p class="eyebrow-label reveal">our little archive</p>
+    <h2 class="section-title reveal">Photo Gallery</h2>
+    <p class="section-lead reveal">Every one of these still makes me smile. Tap a photo to see it bigger.</p>
+
+    <div class="carousel-wrap reveal">
+      <div class="carousel-track" id="carousel-track"><!-- photo polaroids injected by JS --></div>
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="carousel-prev" aria-label="Previous photo">←</button>
+        <button class="carousel-btn" id="carousel-next" aria-label="Next photo">→</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3. MUSIC SECTION
+       ============================================================ -->
+  <section id="music">
+    <p class="eyebrow-label reveal">our soundtrack</p>
+    <h2 class="section-title reveal">A Song For You</h2>
+    <p class="section-lead reveal" style="margin-left:auto;margin-right:auto;">The one that always reminds me of us.</p>
+
+    <div class="vinyl-wrap reveal">
+      <div class="vinyl" id="section-vinyl"><div class="label">🎵</div></div>
+      <p class="now-playing">now playing<br><strong id="now-playing-title">—</strong></p>
+      <button class="music-cta" id="section-music-btn">
+        <span id="section-music-icon">▶</span> <span id="section-music-label">Play the song</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       OUR SPECIAL MOMENTS — video cards
+       ============================================================ -->
+  <section id="moments">
+    <p class="eyebrow-label reveal">little clips of us</p>
+    <h2 class="section-title reveal">Our Special Moments 🎥</h2>
+    <p class="section-lead reveal">Some moments were too good for just a photo. Tap any clip for the full view.</p>
+
+    <div class="video-grid" id="video-grid"><!-- video cards injected by JS --></div>
+  </section>
+
+  <!-- ============================================================
+       4. MEMORY TIMELINE
+       ============================================================ -->
+  <section id="timeline">
+    <p class="eyebrow-label reveal">chapters of us</p>
+    <h2 class="section-title reveal">Memory Timeline</h2>
+    <p class="section-lead reveal">A few of my favorite moments with you (there are way too many to fit here).</p>
+
+    <div class="timeline" id="timeline-list"><!-- timeline cards injected by JS --></div>
+  </section>
+
+  <!-- ============================================================
+       5. SWEET BIRTHDAY MESSAGE
+       ============================================================ -->
+  <section id="message">
+    <p class="eyebrow-label reveal">from me, to you</p>
+    <h2 class="section-title reveal">A Little Letter</h2>
+
+    <div class="letter-card reveal">
+      <!-- EDIT: TEXT — birthday letter -->
+      <p class="letter-text">
+        Happy Birthday, Tootyyyy ❤️<br><br>
+        Thank you for being one of the most beautiful people in my life. Your smile, kindness, and presence make everything brighter. I hope this new year of your life brings you endless happiness, success, beautiful memories, and everything you dream of. No matter how much time passes, you will always have a very special place in my heart. ✨
+      </p>
+      <p class="letter-signoff">— always your best friend</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       7. FINAL SECTION
+       ============================================================ -->
+  <section id="finale">
+    <div class="finale-hearts reveal">💗✨💜</div>
+    <!-- EDIT: TEXT — finale line -->
+    <p class="finale-text reveal">May your smile never fade, and may all your dreams come true.<br>Happy Birthday, <span class="glow-word">Tootyyyy</span> 🎂✨❤️</p>
+    <p class="finale-footer">made with love, just for you</p>
+  </section>
+
+</div><!-- /#site -->
+
+<!-- ============================================================
+     FIXED MUSIC PLAYER (stays visible everywhere, never resets)
+     ============================================================ -->
+<div id="music-player">
+  <div id="mini-vinyl"><div class="dot"></div></div>
+  <button id="toggle-music-btn" aria-label="Play or pause music">▶</button>
+  <div class="player-text">
+    <span class="label">now playing</span>
+    <span class="song" id="mini-song-title">—</span>
+  </div>
+</div>
+
+<!-- EDIT: MUSIC — put your mp3 in a "music" folder and set the src below -->
+<audio id="bg-audio" loop preload="auto">
+  <source src="music/our-song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ============================================================
+     LIGHTBOX
+     ============================================================ -->
+<div id="lightbox">
+  <button class="lb-close" id="lb-close" aria-label="Close">×</button>
+  <div class="lb-inner">
+    <img id="lb-img" src="" alt="">
+    <p class="lb-caption" id="lb-caption"></p>
+  </div>
+</div>
+
+<!-- ============================================================
+     VIDEO LIGHTBOX — cinematic modal view for clips
+     ============================================================ -->
+<div id="video-lightbox">
+  <button class="vlb-close" id="vlb-close" aria-label="Close">×</button>
+  <div class="vlb-inner">
+    <video id="vlb-video" controls playsinline></video>
+    <p class="vlb-caption" id="vlb-caption"></p>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   EDIT: MUSIC — song title shown in the UI. Keep it in sync with
+   the mp3 you placed in bg-audio's <source> above.
+   ================================================================ */
+const SONG_TITLE = "Our Song";
+
+/* ================================================================
+   EDIT: PHOTOS — add/remove/rename freely. "src" should point to
+   an image file (e.g. "photos/1.jpg"). If a file is missing, a
+   cute placeholder frame is shown automatically so nothing breaks.
+   ================================================================ */
+const PHOTOS = [
+  { src: "photos/1.jpg", caption: "the day it all started 💕" },
+  { src: "photos/2.jpg", caption: "that random road trip 🚗" },
+  { src: "photos/3.jpg", caption: "late night talks 🌙" },
+  { src: "photos/4.jpg", caption: "your birthday, last year 🎈" },
+  { src: "photos/5.jpg", caption: "us being ridiculous 😂" },
+  { src: "photos/6.jpg", caption: "just another perfect day ✨" },
+];
+
+/* ================================================================
+   EDIT: TIMELINE — add/remove memory cards. Order doesn't matter,
+   they render top to bottom exactly as listed here.
+   ================================================================ */
+const TIMELINE = [
+  { date: "The Beginning", title: "How we met", text: "One random moment, and somehow I knew you'd be around for a long time." },
+  { date: "That One Summer", title: "The best trip ever", text: "We laughed so hard we could barely breathe. I still think about it." },
+  { date: "The Hard Days", title: "You showed up", text: "No matter what was going on, you were always just... there. Thank you." },
+  { date: "Every Ordinary Day", title: "The little things", text: "Voice notes, inside jokes, and a thousand tiny memories that mean everything." },
+  { date: "Today", title: "Celebrating you", text: "And now, another year of you — the person who makes everything better." },
+];
+
+/* ================================================================
+   EDIT: VIDEOS — add/remove short clips. "src" should point to an
+   mp4 file (e.g. "videos/1.mp4"). If a file is missing, a cute
+   placeholder frame is shown automatically so nothing breaks.
+   ================================================================ */
+const VIDEOS = [
+  { src: "videos/1.mp4", caption: "that moment we couldn't stop laughing 😂" },
+  { src: "videos/2.mp4", caption: "dancing like nobody's watching 💃" },
+  { src: "videos/3.mp4", caption: "just us, being us 🎈" },
+];
+
+/* ================================================================
+   RENDER: gallery polaroids
+   ================================================================ */
+const track = document.getElementById('carousel-track');
+const tilts = [-4,3,-2,4,-3,2];
+PHOTOS.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'polaroid';
+  card.style.setProperty('--tilt', (tilts[i % tilts.length]) + 'deg');
+  card.innerHTML = `
+    <div class="washi"></div>
+    <div class="photo-box">
+      <img src="${p.src}" alt="${p.caption}" loading="lazy"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="ph-fallback" style="display:none; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+        <span class="icon">🖼️</span>Add photo here<br><small>(photos/${i+1}.jpg)</small>
+      </div>
+    </div>
+    <p class="caption">${p.caption}</p>
+  `;
+  card.addEventListener('click', () => openLightbox(p.src, p.caption));
+  track.appendChild(card);
+});
+
+document.getElementById('carousel-prev').addEventListener('click', () => {
+  track.scrollBy({ left: -260, behavior: 'smooth' });
+});
+document.getElementById('carousel-next').addEventListener('click', () => {
+  track.scrollBy({ left: 260, behavior: 'smooth' });
+});
+
+/* lightbox */
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lb-img');
+const lbCaption = document.getElementById('lb-caption');
+function openLightbox(src, caption){
+  lbImg.src = src;
+  lbImg.alt = caption;
+  lbCaption.textContent = caption;
+  lightbox.classList.add('open');
+}
+document.getElementById('lb-close').addEventListener('click', () => lightbox.classList.remove('open'));
+lightbox.addEventListener('click', (e) => { if(e.target === lightbox) lightbox.classList.remove('open'); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape') lightbox.classList.remove('open'); });
+
+/* ================================================================
+   RENDER: "Our Special Moments" video cards
+   ================================================================ */
+const videoGrid = document.getElementById('video-grid');
+const gridVideoEls = [];
+
+VIDEOS.forEach((v, i) => {
+  const card = document.createElement('div');
+  card.className = 'video-card reveal';
+  card.innerHTML = `
+    <span class="clapper">🎬</span>
+    <div class="video-frame">
+      <video src="${v.src}" muted loop playsinline preload="metadata"
+        aria-label="${v.caption}"></video>
+      <div class="play-badge"><span>⛶</span></div>
+      <div class="vid-fallback" style="display:none;">
+        <span class="icon">🎞️</span>Add a clip here<br><small>(videos/${i+1}.mp4)</small>
+      </div>
+    </div>
+    <p class="caption">${v.caption}</p>
+  `;
+  const videoEl = card.querySelector('video');
+
+  // If the mp4 file isn't found yet, swap in the cute placeholder frame
+  videoEl.addEventListener('error', () => {
+    videoEl.style.display = 'none';
+    card.querySelector('.vid-fallback').style.display = 'flex';
+  });
+
+  card.addEventListener('click', () => openVideoLightbox(v.src, v.caption));
+  videoGrid.appendChild(card);
+  gridVideoEls.push(videoEl);
+});
+
+// Autoplay muted + loop while a clip is on screen, pause once it scrolls away
+const videoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const vid = entry.target;
+    if(entry.isIntersecting){
+      vid.play().catch(() => {});
+    } else {
+      vid.pause();
+    }
+  });
+}, { threshold: 0.5 });
+gridVideoEls.forEach(vid => videoObserver.observe(vid));
+
+/* video lightbox — bigger cinematic view with full controls + sound */
+const videoLightbox = document.getElementById('video-lightbox');
+const vlbVideo = document.getElementById('vlb-video');
+const vlbCaption = document.getElementById('vlb-caption');
+
+function openVideoLightbox(src, caption){
+  // pause the grid clip playing behind the modal
+  gridVideoEls.forEach(v => v.pause());
+  vlbVideo.src = src;
+  vlbVideo.muted = false;
+  vlbVideo.currentTime = 0;
+  vlbCaption.textContent = caption;
+  videoLightbox.classList.add('open');
+  vlbVideo.play().catch(() => {});
+}
+function closeVideoLightbox(){
+  vlbVideo.pause();
+  vlbVideo.removeAttribute('src');
+  vlbVideo.load();
+  videoLightbox.classList.remove('open');
+}
+document.getElementById('vlb-close').addEventListener('click', closeVideoLightbox);
+videoLightbox.addEventListener('click', (e) => { if(e.target === videoLightbox) closeVideoLightbox(); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && videoLightbox.classList.contains('open')) closeVideoLightbox(); });
+
+/* ================================================================
+   RENDER: timeline
+   ================================================================ */
+const tlList = document.getElementById('timeline-list');
+TIMELINE.forEach(item => {
+  const el = document.createElement('div');
+  el.className = 'tl-item reveal';
+  el.innerHTML = `
+    <span class="tl-dot"></span>
+    <div class="tl-card">
+      <span class="tl-date">${item.date}</span>
+      <h3>${item.title}</h3>
+      <p>${item.text}</p>
+    </div>
+  `;
+  tlList.appendChild(el);
+});
+
+/* ================================================================
+   MUSIC PLAYBACK — one shared <audio> element, multiple UI
+   controls (start button, section button, fixed player) all
+   talk to the same element, so it never restarts.
+   ================================================================ */
+const audio = document.getElementById('bg-audio');
+document.getElementById('now-playing-title').textContent = SONG_TITLE;
+document.getElementById('mini-song-title').textContent = SONG_TITLE;
+
+const vinylEls = [document.getElementById('section-vinyl'), document.getElementById('mini-vinyl')];
+const toggleBtn = document.getElementById('toggle-music-btn');
+const sectionBtn = document.getElementById('section-music-btn');
+const sectionIcon = document.getElementById('section-music-icon');
+const sectionLabel = document.getElementById('section-music-label');
+
+function setPlayingUI(isPlaying){
+  vinylEls.forEach(v => v.classList.toggle('spinning', isPlaying));
+  toggleBtn.textContent = isPlaying ? '⏸' : '▶';
+  sectionIcon.textContent = isPlaying ? '⏸' : '▶';
+  sectionLabel.textContent = isPlaying ? 'Pause the song' : 'Play the song';
+}
+
+function playMusic(){
+  const p = audio.play();
+  if(p !== undefined){
+    p.then(() => setPlayingUI(true)).catch(() => {
+      // Autoplay blocked or file missing — reflect paused state gracefully
+      setPlayingUI(false);
+    });
+  }
+}
+function pauseMusic(){ audio.pause(); setPlayingUI(false); }
+function toggleMusic(){ audio.paused ? playMusic() : pauseMusic(); }
+
+toggleBtn.addEventListener('click', toggleMusic);
+sectionBtn.addEventListener('click', toggleMusic);
+audio.addEventListener('play', () => setPlayingUI(true));
+audio.addEventListener('pause', () => setPlayingUI(false));
+
+/* ================================================================
+   START EXPERIENCE — hides overlay, reveals the site, starts
+   music (user gesture satisfies autoplay policies), fires confetti.
+   ================================================================ */
+const overlay = document.getElementById('start-overlay');
+const site = document.getElementById('site');
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  overlay.classList.add('hide');
+  site.classList.add('revealed');
+  playMusic();
+  burstConfetti();
+  document.body.style.overflow = 'auto';
+}, { once:true });
+
+/* ================================================================
+   CONFETTI — lightweight canvas burst, runs once on start
+   ================================================================ */
+function burstConfetti(){
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#FF6FA5', '#C9AEF2', '#FFDA8A', '#FFB8D9', '#E3D4FB'];
+  const pieces = Array.from({ length: 140 }, () => ({
+    x: Math.random() * canvas.width,
+    y: -20 - Math.random() * canvas.height * 0.4,
+    w: 6 + Math.random() * 6,
+    h: 10 + Math.random() * 8,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    speedY: 2 + Math.random() * 3,
+    speedX: -1.5 + Math.random() * 3,
+    rot: Math.random() * 360,
+    rotSpeed: -6 + Math.random() * 12,
+  }));
+
+  let frame = 0;
+  const maxFrames = 220;
+
+  function loop(){
+    frame++;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.x += p.speedX; p.y += p.speedY; p.rot += p.rotSpeed;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    });
+    if(frame < maxFrames){
+      requestAnimationFrame(loop);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+  loop();
+}
+window.addEventListener('resize', () => {
+  const canvas = document.getElementById('confetti-canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+/* ================================================================
+   FLOATING HEARTS & SPARKLES — ambient background effect
+   ================================================================ */
+const floatyLayer = document.getElementById('floaty-layer');
+const floatyEmojis = ['💗','✨','💜','⭐','💕'];
+function spawnFloaty(){
+  const el = document.createElement('span');
+  el.className = 'floaty';
+  el.textContent = floatyEmojis[Math.floor(Math.random() * floatyEmojis.length)];
+  const startX = Math.random() * 100;
+  const drift = (Math.random() * 120 - 60) + 'px';
+  const duration = 9 + Math.random() * 8;
+  el.style.left = startX + 'vw';
+  el.style.setProperty('--drift', drift);
+  el.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
+  el.style.animationDuration = duration + 's';
+  floatyLayer.appendChild(el);
+  setTimeout(() => el.remove(), duration * 1000 + 200);
+}
+setInterval(spawnFloaty, 650);
+for(let i=0;i<6;i++) setTimeout(spawnFloaty, i * 300);
+
+/* ================================================================
+   SCROLL REVEAL — fade/slide elements into view
+   ================================================================ */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+/* ================================================================
+   SIDE NAV — highlight active section on scroll
+   ================================================================ */
+const navLinks = document.querySelectorAll('#side-nav a');
+const sections = document.querySelectorAll('section[id]');
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`#side-nav a[href="#${entry.target.id}"]`);
+      if(active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.5 });
+sections.forEach(s => navObserver.observe(s));
+
+/* prevent page scroll behind the start overlay */
+document.body.style.overflow = 'hidden';
+</script>
+
+</body>
+</html>
